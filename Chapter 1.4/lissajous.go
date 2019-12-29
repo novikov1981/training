@@ -21,11 +21,15 @@ const (
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/lissajous.gif", func(w http.ResponseWriter, r *http.Request) {
 		lissajous(w)
-		fmt.Fprintf(w, "URL.Path = %q\n", r.URL.Path)
 	})
-	log.Fatal(http.ListenAndServe("localhost:=8000", nil))
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, `<body>This is the image: 
+<img src="http://localhost:8000/lissajous.gif"></body>`)
+	})
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 func lissajous(out io.Writer) {
 	const (
